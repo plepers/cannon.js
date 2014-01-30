@@ -30,8 +30,8 @@ CANNON.PointToPointConstraint = function(bodyA,pivotA,bodyB,pivotB,maxForce){
     this.update = function(){
         bodyB.position.vsub(bodyA.position,normal.ni);
         normal.ni.normalize();
-        bodyA.quaternion.vmult(pivotA,normal.ri);
-        bodyB.quaternion.vmult(pivotB,normal.rj);
+        if(bodyA.quaternion) bodyA.quaternion.vmult(pivotA,normal.ri);
+        if(bodyB.quaternion) bodyB.quaternion.vmult(pivotB,normal.rj);
 
         normal.ni.tangents(t1.ni,t2.ni);
         normal.ri.copy(t1.ri);

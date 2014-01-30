@@ -4264,8 +4264,13 @@ CANNON.ContactMaterial = function(m1, m2, friction, restitution){
 
 
 /**
+ * The physics world, where all bodies live.
+ * An instance of the CANNON.World dispatches the following events:
+ * - "preStep", before integration.
+ * - "postStep", after integration.
+ * - "collide", when a contact occurs.
  * @class CANNON.World
- * @brief The physics world
+ * @extends CANNON.EventTarget
  */
 CANNON.World = function(){
 
@@ -7025,8 +7030,8 @@ CANNON.PointToPointConstraint = function(bodyA,pivotA,bodyB,pivotB,maxForce){
     this.update = function(){
         bodyB.position.vsub(bodyA.position,normal.ni);
         normal.ni.normalize();
-        bodyA.quaternion.vmult(pivotA,normal.ri);
-        bodyB.quaternion.vmult(pivotB,normal.rj);
+        if(bodyA.quaternion) bodyA.quaternion.vmult(pivotA,normal.ri);
+        if(bodyB.quaternion) bodyB.quaternion.vmult(pivotB,normal.rj);
 
         normal.ni.tangents(t1.ni,t2.ni);
         normal.ri.copy(t1.ri);
